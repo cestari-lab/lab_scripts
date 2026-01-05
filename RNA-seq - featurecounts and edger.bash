@@ -34,12 +34,13 @@ names(data)<- c("Control-Bio1", "Control-Bio2", "Control-Bio3", "Treatment-Bio1"
 #Create DGEList and statistical design
 y <- DGEList(counts=data, group=group)
 group <- factor(c(1,1,1,2,2,2))
+design <- model.matrix(~group)
 
 #  Filter out lowly expressed genes
 keep <- filterByExpr(y)
 y <- y[keep, , keep.lib.sizes=FALSE]
 
-design <- model.matrix(~group)
+# Normalize the library
 y <- normLibSizes(y)
 
 #Generate plot MSD for sample comparisons
@@ -56,6 +57,7 @@ fit <- glmQLFit(y, design)
 
 # Compare groups treated vs non-treated
 qlf.2vs1 <- glmQLFTest(fit, coef=2) 
+
 
 
 
