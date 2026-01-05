@@ -32,7 +32,7 @@ data <- read.table("counts.matrix", header = TRUE, sep = "", skip = 0, row.names
 names(data)<- c("Control-Bio1", "Control-Bio2", "Control-Bio3", "Treatment-Bio1", "Treatment-Bio2", "Treatment-Bio3")
 
 #Create DGEList and statistical design
-y <- DGEList(counts=data)
+y <- DGEList(counts=data, group=group)
 group <- factor(c(1,1,1,2,2,2))
 design <- model.matrix(~group)
 y <- calcNormFactors(y)
@@ -51,3 +51,4 @@ fit <- glmQLFit(y, design)
 
 # Compare groups treated vs non-treated
 qlf.2vs1 <- glmQLFTest(fit, coef=2) 
+
